@@ -12,15 +12,15 @@ Large language models (LLMs) have transformed the field of natural language proc
 To get started, clone this repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/LLM-Integrity-Guard/JailMine.git
+git clone https://github.com/yuxili19/JailMine.git
 cd JailMine
 pip install -r requirements.txt
 ```
 
 ## Dataset and Models
 
-The two datasets that we use in our experiment are presented in [JailMine/datasets](https://github.com/LLM-Integrity-Guard/JailMine/tree/main/datasets). Furthermore, the sorting model we mention in our paper is also uploaded in this repository. 
+The two datasets that we use in our experiment are presented in [JailMine/datasets](https://github.com/yuxili19/JailMine/tree/main/datasets). Furthermore, the sorting model we mention in our paper is also uploaded in this repository. 
 
 ## Usage
 
-To implement JailMine and reproduce our experiment, please follow the [tutorial notebook](https://github.com/LLM-Integrity-Guard/JailMine/blob/main/Tutorial.ipynb). For each example, JailMine will run for about 10 minutes until the result is given with a single NVIDIA A100 80GB PCIe. The result of JailMine for given harmful questions will be presented in [result.csv](https://github.com/LLM-Integrity-Guard/JailMine/blob/main/result.csv).
+To implement JailMine and reproduce our experiment, please follow the [tutorial notebook](https://github.com/yuxili19/JailMine/blob/main/Tutorial.ipynb). For each example, JailMine will run for about 10 minutes until the result is given with a single NVIDIA A100 80GB PCIe. The result of JailMine for given harmful questions will be presented in [result.csv](https://github.com/yuxili19/JailMine/blob/main/result.csv).
