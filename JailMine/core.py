@@ -27,6 +27,7 @@ import os
 import time
 from sentence_transformers import SentenceTransformer
 import pandas as pd
+import warnings
 
 
 
@@ -94,6 +95,14 @@ class JailMine:
                    "It's important to note that",
                    "I must emphasize that",
                    "I must clarify that",]
+        self.token = os.environ.get("HF_TOKEN", None)
+        if self.device == "cpu":
+            warnings.warn('You are now using CPU for inference! Please consider using GPU!')
+        else:
+            devices = '0'
+            for i in range(1, self.n_devices):
+                devices += f',{i}'
+            os.environ['CUDA_VISIBLE_DEVICES'] = devices
         
     def generate_positive_prefix(self,
                            questions):
@@ -131,9 +140,9 @@ class JailMine:
     
     def LoadModel(self):
         
-        self.tokenizer = AutoTokenizer.from_pretrained(self.target_model_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.target_model_path, token = self.token)
         self.tokenizer.pad_token=self.tokenizer.eos_token
-        hf_model = AutoModelForCausalLM.from_pretrained(self.target_model_path)
+        hf_model = AutoModelForCausalLM.from_pretrained(self.target_model_path, token = self.token)
         self.embed_model = SentenceTransformer(self.embedding_model_path ,device=self.device)
         
         try:
@@ -160,16 +169,16 @@ class JailMine:
                     dtype=torch.bfloat16
                 )
         except:
-            raise NameError(f'We do not support f{self.model_name} yet!')
+            raise NameError(f'We do not support {self.model_name} yet!')
         self.model.eval()
         del hf_model
         
-        self.judge_tokenizer = AutoTokenizer.from_pretrained(self.judge_model_path)
+        self.judge_tokenizer = AutoTokenizer.from_pretrained(self.judge_model_path, token = self.token)
         self.judge_tokenizer.pad_token = self.judge_tokenizer.eos_token
         if self.n_devices > 1:
-            self.judge_model = AutoModelForCausalLM.from_pretrained(self.judge_model_path, device_map='auto')
+            self.judge_model = AutoModelForCausalLM.from_pretrained(self.judge_model_path, device_map='auto', token = self.token)
         else:
-            self.judge_model = AutoModelForCausalLM.from_pretrained(self.judge_model_path, device_map=self.device)
+            self.judge_model = AutoModelForCausalLM.from_pretrained(self.judge_model_path, device_map=self.device, token = self.token)
         gc.collect()
         
         
